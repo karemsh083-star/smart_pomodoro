@@ -11,12 +11,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Auto-Structure Flutter Project
+      - name: Create Structure
+        run: mkdir -p lib
+
+      - name: Move Source File
         run: |
-          mkdir -p lib
           if [ -f "main.dart" ]; then mv main.dart lib/main.dart; fi
-          if [ -f "lib/main.dart.txt" ]; then mv lib/main.dart.txt lib/main.dart; fi
-          mkdir -p android/app/src/main
+          if [ -f "main.dart.txt" ]; then mv main.dart.txt lib/main.dart; fi
+
+      - name: Create Android Folder
+        run: mkdir -p android/app/src/main
+
+      - name: Move Manifest File
+        run: |
           if [ -f "AndroidManifest.xml" ]; then mv AndroidManifest.xml android/app/src/main/AndroidManifest.xml; fi
 
       - name: Set up Java
