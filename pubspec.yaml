@@ -1,5 +1,5 @@
 name: smart_pomodoro
-description: "A Production-Ready Smart Pomodoro Application."
+description: "Smart Pomodoro Production Application"
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,8 +9,3 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-flutter:
-  uses-material-design: true
-  assets:
-    - assets/images/bg_study.png
