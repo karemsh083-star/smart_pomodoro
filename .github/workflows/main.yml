@@ -1,0 +1,55 @@
+name: Build Smart Pomodoro APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Generate Full App Structure Automatically
+        run: |
+          mkdir -p temp_backup
+          if [ -f "main.dart" ]; then cp main.dart temp_backup/; fi
+          if [ -f "lib/main.dart" ]; then cp lib/main.dart temp_backup/; fi
+          
+          cd ..
+          rm -rf smart_pomodoro_new
+          flutter create --org com.karem --project-name smart_pomodoro smart_pomodoro_new
+          
+          cd smart_pomodoro_new
+          cp -r . ../smart_pomodoro/
+          cd ../smart_pomodoro
+          
+          mkdir -p lib
+          if [ -f "temp_backup/main.dart" ]; then cp temp_backup/main.dart lib/main.dart; fi
+          if [ -f "temp_backup/lib/main.dart" ]; then cp temp_backup/lib/main.dart lib/main.dart; fi
+          
+          sed -i 's/android:label="smart_pomodoro"/android:label="Smart Pomodoro"/g' android/app/src/main/AndroidManifest.xml
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Build APK Release
+        run: flutter build apk --release
+
+      - name: Upload Artifact APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Smart-Pomodoro-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
