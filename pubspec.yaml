@@ -1,0 +1,13 @@
+name: smart_pomodoro
+description: "Smart Pomodoro Production Application with Persistent Storage"
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # تم إضافة المكتبة الرسمية لتخزين وحفظ الساعات بشكل أبدي داخل ذاكرة الهاتف الداكنة
+  shared_preferences: ^2.2.0
